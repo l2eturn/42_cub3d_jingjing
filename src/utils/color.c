@@ -1,39 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_frame.c                                     :+:      :+:    :+:   */
+/*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: waroonwork@gmail.com <WaroonRagwongsiri    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/01 14:57:20 by waroonwork@       #+#    #+#             */
-/*   Updated: 2026/08/01 14:57:23 by waroonwork@      ###   ########.fr       */
+/*   Created: 2026/08/01 14:53:30 by waroonwork@       #+#    #+#             */
+/*   Updated: 2026/08/01 15:15:40 by waroonwork@      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void	render_frame(t_game *game)
+uint32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-	t_ray	ray;
-	int		x;
+	uint32_t	color;
 
-	x = 0;
-	while (x < WIDTH)
-	{
-		ray_init(game, &ray, x);
-		ray_dda(game, &ray);
-		ray_project(&ray);
-		ray_set_texture(game, &ray);
-		draw_column(game, &ray, x);
-		x++;
-	}
-}
-
-void	render_loop(void *parameter)
-{
-	t_game	*game;
-
-	game = parameter;
-	player_input(game);
-	render_frame(game);
+	color = (uint32_t)r << 24;
+	color |= (uint32_t)g << 16;
+	color |= (uint32_t)b << 8;
+	color |= (uint32_t)a;
+	return (color);
 }

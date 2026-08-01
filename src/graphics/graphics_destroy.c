@@ -1,39 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_frame.c                                     :+:      :+:    :+:   */
+/*   graphics_destroy.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: waroonwork@gmail.com <WaroonRagwongsiri    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/01 14:57:20 by waroonwork@       #+#    #+#             */
-/*   Updated: 2026/08/01 14:57:23 by waroonwork@      ###   ########.fr       */
+/*   Created: 2026/08/01 14:59:19 by waroonwork@       #+#    #+#             */
+/*   Updated: 2026/08/01 15:22:58 by waroonwork@      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void	render_frame(t_game *game)
+void	graphics_destroy(t_game *game)
 {
-	t_ray	ray;
-	int		x;
+	int	i;
 
-	x = 0;
-	while (x < WIDTH)
+	if (!game)
+		return ;
+	i = 0;
+	while (i < TEX_COUNT)
 	{
-		ray_init(game, &ray, x);
-		ray_dda(game, &ray);
-		ray_project(&ray);
-		ray_set_texture(game, &ray);
-		draw_column(game, &ray, x);
-		x++;
+		if (game->texture[i])
+		{
+			mlx_delete_texture(game->texture[i]);
+			game->texture[i] = NULL;
+		}
+		i++;
 	}
-}
-
-void	render_loop(void *parameter)
-{
-	t_game	*game;
-
-	game = parameter;
-	player_input(game);
-	render_frame(game);
+	if (game->mlx && game->image)
+	{
+		mlx_delete_image(game->mlx, game->image);
+		game->image = NULL;
+	}
+	if (game->mlx)
+	{
+		mlx_terminate(game->mlx);
+		game->mlx = NULL;
+	}
 }
