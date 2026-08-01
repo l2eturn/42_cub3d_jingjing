@@ -1,39 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_frame.c                                     :+:      :+:    :+:   */
+/*   graphics_init.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: waroonwork@gmail.com <WaroonRagwongsiri    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/01 14:57:20 by waroonwork@       #+#    #+#             */
-/*   Updated: 2026/08/01 14:57:23 by waroonwork@      ###   ########.fr       */
+/*   Created: 2026/08/01 14:59:07 by waroonwork@       #+#    #+#             */
+/*   Updated: 2026/08/01 14:59:10 by waroonwork@      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void	render_frame(t_game *game)
+bool	graphics_init(t_game *game)
 {
-	t_ray	ray;
-	int		x;
-
-	x = 0;
-	while (x < WIDTH)
-	{
-		ray_init(game, &ray, x);
-		ray_dda(game, &ray);
-		ray_project(&ray);
-		ray_set_texture(game, &ray);
-		draw_column(game, &ray, x);
-		x++;
-	}
-}
-
-void	render_loop(void *parameter)
-{
-	t_game	*game;
-
-	game = parameter;
-	player_input(game);
-	render_frame(game);
+	mlx_set_setting(MLX_MAXIMIZED, false);
+	game->mlx = mlx_init(WIDTH, HEIGHT, TITLE, false);
+	if (!game->mlx)
+		return (false);
+	if (!texture_load_all(game))
+		return (false);
+	game->image = mlx_new_image(game->mlx, WIDTH, HEIGHT);
+	if (!game->image)
+		return (false);
+	if (mlx_image_to_window(game->mlx, game->image, 0, 0) < 0)
+		return (false);
+	return (true);
 }

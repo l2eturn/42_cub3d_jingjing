@@ -1,54 +1,125 @@
-NAME    = cub3D
-CC      = cc
-FLAGS   = -Wall -Wextra -Werror
-RM      = rm -f
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: waroonwork@gmail.com <WaroonRagwongsiri    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/10/04 20:20:04 by waroonwork@       #+#    #+#              #
+#    Updated: 2026/08/01 15:14:18 by waroonwork@      ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-MLX_DIR = ../MLX42
-MLX_LIB = $(MLX_DIR)/build/libmlx42.a
-MLX_INC = -I$(MLX_DIR)/include
-GLFW    = $(shell pkg-config --libs glfw3 2>/dev/null || echo "-L/opt/homebrew/lib -lglfw")
-MLX_LNK = $(MLX_LIB) $(GLFW) -framework Cocoa -framework OpenGL -framework IOKit -lm
+NAME			:=	cub3D
 
-INC     = -Iincludes $(MLX_INC)
+CC				:=	cc
+AR				:=	ar rcs
+CFLAGS			:=	-Wall -Wextra -Werror -g3
+LDFLAGS			:=	-ldl -lglfw -pthread -lm
 
-SRCS    = src/main.c \
-          src/parsing/parse_file.c \
-          src/parsing/parse_elements.c \
-          src/parsing/parse_map.c \
-          src/parsing/validate_map.c \
-          src/mlx/mlx_init.c \
-          src/mlx/mlx_utils.c \
-          src/textures/texture_load.c \
-          src/player/player.c \
-          src/events/events.c \
-          src/raycast/raycast.c \
-          src/render/render_frame.c \
-          src/render/render_wall.c \
-          src/render/render_flat.c \
-          src/cleanup/cleanup.c \
-          src/utils/utils.c \
-          src/utils/gnl.c
+# Project
+INC_DIR			:=	includes/
+SRCS_DIR		:=	src/
+SRCS_FILES		:=	main.c \
+					graphics/graphics_destroy.c graphics/graphics_init.c graphics/texture_load.c \
+					map/map_access.c \
+					parser/parse_scene.c \
+					player/player_init.c player/player_input.c player/player_move.c player/player_rotate.c \
+					render/draw_column.c render/ray_dda.c render/ray_init.c render/ray_projection.c render/ray_texture.c render/render_frame.c \
+					utils/color.c
+SRCS			:=	$(addprefix $(SRCS_DIR), $(SRCS_FILES))
+OBJS			:=	$(SRCS:.c=.o)
 
-OBJS    = $(SRCS:.c=.o)
-HEADERS = includes/cub3d.h
+# Libft
+LIBFT_DIR		:=	libft/
+LIBFT_INC_DIR	:=	$(LIBFT_DIR)includes/
+LIBFT			:=	libft.a
 
-all: $(MLX_LIB) $(NAME)
+# Get Next Line
+GNL_DIR			:=	get_next_line/
+GNL_INC_DIR		:=	$(GNL_DIR)
+GNL				:=	libgnl.a
+GNL_SRCS		:=	$(GNL_DIR)get_next_line_bonus.c \
+					$(GNL_DIR)get_next_line_utils_bonus.c
+GNL_OBJS		:=	$(GNL_SRCS:.c=.o)
 
-$(MLX_LIB):
-	@cd $(MLX_DIR) && cmake -B build && cmake --build build -j4
+# MLX42
+MLX42_DIR		:=	MLX42/
+MLX42_INC_DIR	:=	$(MLX42_DIR)include/
+MLX42			:=	libmlx42.a
 
-$(NAME): $(OBJS)
-	$(CC) $(FLAGS) $(OBJS) $(MLX_LNK) -o $(NAME)
+# Include flags
+CPPFLAGS		:=	-I$(INC_DIR) \
+					-I$(LIBFT_INC_DIR) \
+					-I$(GNL_INC_DIR) \
+					-I$(MLX42_INC_DIR)
 
-%.o: %.c $(HEADERS)
-	$(CC) $(FLAGS) $(INC) -c $< -o $@
+# Main rule
+# Build order:
+# 1. MLX42
+# 2. Libft
+# 3. GNL
+# 4. Project source objects
+# 5. Final executable
+all				:
+	$(MAKE) $(MLX42)
+	$(MAKE) $(LIBFT)
+	$(MAKE) $(GNL)
+	$(MAKE) $(OBJS)
+	$(MAKE) $(NAME)
 
-clean:
-	$(RM) $(OBJS)
+# Final executable
+$(NAME)			:	$(OBJS) $(LIBFT) $(GNL) $(MLX42) Makefile
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(GNL) $(MLX42) \
+		$(LDFLAGS) -o $@
 
-fclean: clean
-	$(RM) $(NAME)
+# Project object files
+$(SRCS_DIR)%.o	:	$(SRCS_DIR)%.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-re: fclean all
+# Libft
+libft			:	$(LIBFT)
 
-.PHONY: all clean fclean re
+$(LIBFT)		:
+	$(MAKE) -C $(LIBFT_DIR)
+	cp $(LIBFT_DIR)libft.a $(LIBFT)
+
+# Get Next Line
+gnl				:	$(GNL)
+
+$(GNL)			:	$(GNL_OBJS)
+	$(AR) $@ $^
+
+$(GNL_DIR)%.o	:	$(GNL_DIR)%.c
+	$(CC) $(CFLAGS) -I$(GNL_INC_DIR) -c $< -o $@
+
+# MLX42
+mlx				:	$(MLX42)
+
+$(MLX42)		:	$(MLX42_DIR)
+	cd $(MLX42_DIR) && cmake -B build
+	cd $(MLX42_DIR) && cmake --build build -j4
+	cp $(MLX42_DIR)/build/$(MLX42) .
+
+$(MLX42_DIR)	:
+	git clone https://github.com/codam-coding-college/MLX42.git $(MLX42_DIR)
+
+# Cleaning
+clean			:
+	rm -f $(OBJS)
+	rm -f $(GNL_OBJS)
+	$(MAKE) -C $(LIBFT_DIR) clean
+
+fclean			:	clean
+	rm -f $(NAME)
+	rm -f $(LIBFT)
+	rm -f $(GNL)
+	rm -f $(MLX42)
+	rm -rf $(MLX42_DIR)
+
+re				:	fclean
+	$(MAKE) all
+
+bonus			:	all
+
+.PHONY			:	all clean fclean re bonus libft gnl mlx

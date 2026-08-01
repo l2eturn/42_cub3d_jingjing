@@ -1,39 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_frame.c                                     :+:      :+:    :+:   */
+/*   garbage.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: waroonwork@gmail.com <WaroonRagwongsiri    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/01 14:57:20 by waroonwork@       #+#    #+#             */
-/*   Updated: 2026/08/01 14:57:23 by waroonwork@      ###   ########.fr       */
+/*   Created: 2025/10/30 10:09:54 by waragwon          #+#    #+#             */
+/*   Updated: 2026/08/01 14:20:46 by waroonwork@      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/cub3d.h"
+#include "../includes/libft.h"
 
-void	render_frame(t_game *game)
+void	*ft_safe_calloc(size_t nmemb, size_t size, bool is_clear)
 {
-	t_ray	ray;
-	int		x;
+	static t_list	*mem_lst = NULL;
+	t_list			*new;
+	void			*ptr;
 
-	x = 0;
-	while (x < WIDTH)
+	if (is_clear)
 	{
-		ray_init(game, &ray, x);
-		ray_dda(game, &ray);
-		ray_project(&ray);
-		ray_set_texture(game, &ray);
-		draw_column(game, &ray, x);
-		x++;
+		ft_lstclear(&mem_lst, free);
+		return (NULL);
 	}
-}
-
-void	render_loop(void *parameter)
-{
-	t_game	*game;
-
-	game = parameter;
-	player_input(game);
-	render_frame(game);
+	ptr = ft_calloc(nmemb, size);
+	if (!ptr)
+		return (NULL);
+	new = ft_lstnew(ptr);
+	if (!new)
+	{
+		free(ptr);
+		return (NULL);
+	}
+	ft_lstadd_front(&mem_lst, new);
+	return (ptr);
 }

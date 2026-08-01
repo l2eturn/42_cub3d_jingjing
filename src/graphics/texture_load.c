@@ -1,39 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_frame.c                                     :+:      :+:    :+:   */
+/*   texture_load.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: waroonwork@gmail.com <WaroonRagwongsiri    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/01 14:57:20 by waroonwork@       #+#    #+#             */
-/*   Updated: 2026/08/01 14:57:23 by waroonwork@      ###   ########.fr       */
+/*   Created: 2026/08/01 14:58:55 by waroonwork@       #+#    #+#             */
+/*   Updated: 2026/08/01 15:23:54 by waroonwork@      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void	render_frame(t_game *game)
+bool	texture_load_all(t_game *game)
 {
-	t_ray	ray;
-	int		x;
+	int	i;
 
-	x = 0;
-	while (x < WIDTH)
+	i = 0;
+	while (i < TEX_COUNT)
 	{
-		ray_init(game, &ray, x);
-		ray_dda(game, &ray);
-		ray_project(&ray);
-		ray_set_texture(game, &ray);
-		draw_column(game, &ray, x);
-		x++;
+		game->texture[i] = mlx_load_png(
+				game->scene.texture_path[i]);
+		if (!game->texture[i])
+			return (false);
+		i++;
 	}
-}
-
-void	render_loop(void *parameter)
-{
-	t_game	*game;
-
-	game = parameter;
-	player_input(game);
-	render_frame(game);
+	return (true);
 }

@@ -1,26 +1,53 @@
-#include "cub3d.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: waroonwork@gmail.com <WaroonRagwongsiri    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/01 13:46:58 by waroonwork@       #+#    #+#             */
+/*   Updated: 2026/08/01 15:23:19 by waroonwork@      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*
- * ลำดับสำคัญ: parse → validate → init → render → loop → cleanup
- * ห้าม init MLX / render ก่อนที่ map จะ valid (design rule)
- */
+#include "../includes/cub3d.h"
+
+static int	print_error(char *message)
+{
+	ft_putendl_fd("Error", STDERR_FILENO);
+	ft_putendl_fd(message, STDERR_FILENO);
+	return (EXIT_FAILURE);
+}
+
+static int	run_game(t_game *game)
+{
+	if (!player_init(game))
+		return (print_error("Invalid player configuration"));
+	if (!graphics_init(game))
+	{
+		graphics_destroy(game);
+		return (print_error("Graphics initialization failed"));
+	}
+	mlx_loop_hook(game->mlx, render_loop, game);
+	mlx_loop(game->mlx);
+	graphics_destroy(game);
+	return (EXIT_SUCCESS);
+}
+
 int	main(int argc, char **argv)
 {
 	t_game	game;
+	int		status;
 
 	if (argc != 2)
-		return (write(2, "Error\nUsage: ./cub3D <map.cub>\n", 30), 1);
-	memset(&game, 0, sizeof(t_game));
-	if (parse_cub(&game, argv[1]) != 0)
-		return (cleanup_exit(&game, NULL, 1));
-	if (validate_map(&game) != 0)
-		return (cleanup_exit(&game, NULL, 1));
-	if (init_mlx(&game) != 0)
-		return (cleanup_exit(&game, NULL, 1));
-	if (load_textures(&game) != 0)
-		return (cleanup_exit(&game, NULL, 1));
-	/* TODO: mlx_key_hook(game.mlx.mlx, key_hook, &game); */
-	/* TODO: mlx_loop_hook(game.mlx.mlx, loop_hook, &game); */
-	/* TODO: mlx_loop(game.mlx.mlx); */
-	return (cleanup_exit(&game, NULL, 0));
+		return (print_error("Usage: ./cub3D <map.cub>"));
+	ft_bzero(&game, sizeof(game));
+	if (!parse_scene(argv[1], &game.scene))
+	{
+		ft_safe_calloc(0, 0, true);
+		return (print_error("Failed to parse scene"));
+	}
+	status = run_game(&game);
+	ft_safe_calloc(0, 0, true);
+	return (status);
 }
