@@ -45,7 +45,7 @@ int	main(int argc, char **argv)
 	if (!parse_scene(argv[1], &game.scene))
 	{
 		ft_safe_calloc(0, 0, true);
-		return (print_error("Failed to parse scene"));
+		return (EXIT_FAILURE);
 	}
 	status = run_game(&game);
 	ft_safe_calloc(0, 0, true);

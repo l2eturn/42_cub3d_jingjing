@@ -13,6 +13,7 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
+# include <fcntl.h>
 # include <math.h>
 # include <stdbool.h>
 # include <stdint.h>
@@ -142,5 +143,16 @@ uint32_t	get_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 // Parser
 bool		parse_scene(char *filename, t_scene *scene);
+bool		parse_elements(int fd, t_scene *scene, char **first_map_line);
+bool		elements_complete(t_scene *scene);
+bool		parse_color(t_rgb *color, char *value);
+bool		parse_map(int fd, t_scene *scene, char *first_line);
+bool		validate_map(t_scene *scene);
+
+// Parser helpers
+bool		parse_error(char *message);
+bool		is_direction(char c);
+bool		is_blank_line(char *line);
+bool		is_map_line(char *line);
 
 #endif

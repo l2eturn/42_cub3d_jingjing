@@ -30,7 +30,7 @@ OBJS			:=	$(SRCS:%.c=%.o)
 all				:	$(NAME)
 
 $(NAME)			:	$(OBJS) Makefile
-	ar rcs -o $@ $^
+	ar rcs $@ $(OBJS)
 
 $(OBJS)			:	%.o : %.c
 	$(CC) $(CFLAGS) -I$(INC_DIR) -c $< -o $@

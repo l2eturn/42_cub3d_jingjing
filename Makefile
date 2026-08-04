@@ -15,7 +15,17 @@ NAME			:=	cub3D
 CC				:=	cc
 AR				:=	ar rcs
 CFLAGS			:=	-Wall -Wextra -Werror -g3
+
+# Linking differs per OS: macOS needs Apple frameworks instead of dl/pthread
+UNAME			:=	$(shell uname)
+ifeq ($(UNAME), Darwin)
+GLFW_FLAGS		:=	$(shell pkg-config --libs glfw3 2>/dev/null \
+						|| echo "-L/opt/homebrew/lib -lglfw")
+LDFLAGS			:=	$(GLFW_FLAGS) -framework Cocoa -framework OpenGL \
+					-framework IOKit -lm
+else
 LDFLAGS			:=	-ldl -lglfw -pthread -lm
+endif
 
 # Project
 INC_DIR			:=	includes/
@@ -23,7 +33,7 @@ SRCS_DIR		:=	src/
 SRCS_FILES		:=	main.c \
 					graphics/graphics_destroy.c graphics/graphics_init.c graphics/texture_load.c \
 					map/map_access.c \
-					parser/parse_scene.c \
+					parser/parse_color.c parser/parse_elements.c parser/parse_file.c parser/parse_map.c parser/parse_utils.c parser/validate_map.c \
 					player/player_init.c player/player_input.c player/player_move.c player/player_rotate.c \
 					render/draw_column.c render/ray_dda.c render/ray_init.c render/ray_projection.c render/ray_texture.c render/render_frame.c \
 					utils/color.c
