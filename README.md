@@ -29,7 +29,7 @@ In order to run this project
 | --- | --- |
 | `W` / `S` | walk forward / backward |
 | `A` / `D` | strafe left / right |
-| `←` / `→` | turn the camera |
+| `←` / `→`, `Q`/`E` | turn the camera |
 | `ESC` | quit |
 
 Movement is scaled by `delta_time`, so speed does not depend on the frame rate.
@@ -71,6 +71,7 @@ Map is not closed by walls
 
 | Message | Cause |
 | --- | --- |
+| `WIDTH and HEIGHT must be >= MIN_WIDTH and MIN_HEIGHT` | window size in `cub3d.h` is set below the minimum |
 | `Scene file must end with .cub` | wrong file extension |
 | `Cannot open scene file` | missing file or no read permission |
 | `Unknown identifier in scene file` | a line before the map that is not `NO SO WE EA F C` |

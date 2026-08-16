@@ -6,7 +6,7 @@
 /*   By: waroonwork@gmail.com <WaroonRagwongsiri    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/01 13:48:18 by waroonwork@       #+#    #+#             */
-/*   Updated: 2026/08/01 16:01:48 by waroonwork@      ###   ########.fr       */
+/*   Updated: 2026/08/16 16:43:29 by waroonwork@      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 
 # define WIDTH 1280
 # define HEIGHT 720
+# define MIN_WIDTH 640
+# define MIN_HEIGHT 360
 # define TITLE "cub3D"
 
 # define MOVE_SPEED 3.0

@@ -6,7 +6,7 @@
 /*   By: waroonwork@gmail.com <WaroonRagwongsiri    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/01 14:58:29 by waroonwork@       #+#    #+#             */
-/*   Updated: 2026/08/01 14:58:33 by waroonwork@      ###   ########.fr       */
+/*   Updated: 2026/08/16 16:28:59 by waroonwork@      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,9 @@ void	player_input(t_game *game)
 	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
 		player_rotate(game, rotation);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
+		player_rotate(game, -rotation);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_E))
+		player_rotate(game, rotation);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_Q))
 		player_rotate(game, -rotation);
 }
