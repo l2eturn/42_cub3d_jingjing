@@ -3,29 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smarttapon.lim@gmail.com <terx13>          +#+  +:+       +#+        */
+/*   By: slimvutt <slimvutt@student.42bangkok.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/04 09:12:04 by smarttapon.       #+#    #+#             */
-/*   Updated: 2026/08/04 09:12:04 by smarttapon.      ###   ########.fr       */
+/*   Created: 2026/08/04 09:12:04 by slimvutt          #+#    #+#             */
+/*   Updated: 2026/08/04 09:12:04 by slimvutt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-
-static bool	valid_map_chars(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i] && line[i] != '\n')
-	{
-		if (line[i] != WALL && line[i] != WALKABLE
-			&& line[i] != SPACE && !is_direction(line[i]))
-			return (false);
-		i++;
-	}
-	return (true);
-}
 
 /*
 ** Rows are collected in a list first because the map height is only
@@ -54,13 +39,36 @@ static bool	collect_line(t_list **lines, char *line, int *width)
 	return (true);
 }
 
+static bool	only_trailing_blanks(int fd, char *line)
+{
+	while (line && is_blank_line(line))
+	{
+		free(line);
+		line = get_next_line(fd);
+	}
+	if (!line)
+		return (true);
+	free(line);
+	line = get_next_line(fd);
+	while (line)
+	{
+		free(line);
+		line = get_next_line(fd);
+	}
+	return (false);
+}
+
 static bool	read_map_lines(int fd, t_list **lines, char *line, int *width)
 {
 	while (line)
 	{
 		if (is_blank_line(line))
-			return (free(line), parse_error("Empty line inside map"));
-		if (!valid_map_chars(line))
+		{
+			if (only_trailing_blanks(fd, line))
+				return (true);
+			return (parse_error("Empty line inside map"));
+		}
+		if (!is_map_line(line))
 			return (free(line), parse_error("Invalid character in map"));
 		if (!collect_line(lines, line, width))
 			return (free(line), parse_error("Map allocation failed"));

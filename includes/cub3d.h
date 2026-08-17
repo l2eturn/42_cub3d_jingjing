@@ -57,6 +57,19 @@ typedef struct s_rgb
 	int	b;
 }	t_rgb;
 
+typedef struct s_point
+{
+	int	x;
+	int	y;
+}	t_point;
+
+typedef struct s_flood
+{
+	char	**visited;
+	t_point	*stack;
+	int		top;
+}	t_flood;
+
 typedef struct s_map
 {
 	char	**grid;

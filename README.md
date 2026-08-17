@@ -40,10 +40,10 @@ instead of sticking.
 The argument must be a file ending in `.cub`. It holds the six identifiers
 first, then the map last.
 ```txt
-NO <path_to_texture.png>
-SO <path_to_texture.png>
-WE <path_to_texture.png>
-EA <path_to_texture.png>
+NO ./textures/wall_1.png
+SO ./textures/wall_2.png
+WE ./textures/wall_3.png
+EA ./textures/wall_4.png
 F 220,100,0
 C 100,180,240
 

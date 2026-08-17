@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_map.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smarttapon.lim@gmail.com <terx13>          +#+  +:+       +#+        */
+/*   By: slimvutt <slimvutt@student.42bangkok.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/04 09:12:04 by smarttapon.       #+#    #+#             */
-/*   Updated: 2026/08/04 09:12:04 by smarttapon.      ###   ########.fr       */
+/*   Created: 2026/08/04 09:12:04 by slimvutt          #+#    #+#             */
+/*   Updated: 2026/08/04 09:12:04 by slimvutt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,29 +31,54 @@ static char	**alloc_visited(t_map *map)
 	return (visited);
 }
 
+static bool	push_neighbour(t_map *map, t_flood *state,
+		int x, int y)
+{
+	if (x < 0 || x >= map->width || y < 0 || y >= map->height)
+		return (false);
+	if (state->visited[y][x])
+		return (true);
+	if (map->grid[y][x] == SPACE)
+		return (false);
+	if (map->grid[y][x] == WALL)
+		return (true);
+	state->visited[y][x] = 1;
+	state->stack[state->top].x = x;
+	state->stack[state->top].y = y;
+	state->top++;
+	return (true);
+}
+
 /*
 ** Spreads out from the player over every reachable cell. Falling off
 ** the grid, or stepping onto a padded space, means the walls do not
 ** enclose the player, so the map is open. Walls stop the spread.
 */
-static bool	flood_fill(t_map *map, char **visited, int x, int y)
+static bool	flood_fill(t_map *map, t_flood *state,
+		int start_x, int start_y)
 {
-	if (x < 0 || x >= map->width || y < 0 || y >= map->height)
-		return (false);
-	if (visited[y][x])
-		return (true);
-	visited[y][x] = 1;
-	if (map->grid[y][x] == WALL)
-		return (true);
-	if (map->grid[y][x] == SPACE)
-		return (false);
-	if (!flood_fill(map, visited, x + 1, y))
-		return (false);
-	if (!flood_fill(map, visited, x - 1, y))
-		return (false);
-	if (!flood_fill(map, visited, x, y + 1))
-		return (false);
-	return (flood_fill(map, visited, x, y - 1));
+	t_point	current;
+
+	state->top = 0;
+	state->visited[start_y][start_x] = 1;
+	state->stack[state->top++] = (t_point){start_x, start_y};
+	while (state->top > 0)
+	{
+		current = state->stack[--state->top];
+		if (!push_neighbour(map, state,
+				current.x + 1, current.y))
+			return (false);
+		if (!push_neighbour(map, state,
+				current.x - 1, current.y))
+			return (false);
+		if (!push_neighbour(map, state,
+				current.x, current.y + 1))
+			return (false);
+		if (!push_neighbour(map, state,
+				current.x, current.y - 1))
+			return (false);
+	}
+	return (true);
 }
 
 static bool	find_player(t_map *map, int *px, int *py)
@@ -87,6 +112,8 @@ static bool	find_player(t_map *map, int *px, int *py)
 bool	validate_map(t_scene *scene)
 {
 	char	**visited;
+	t_point	*stack;
+	t_flood	state;
 	int		px;
 	int		py;
 
@@ -97,7 +124,13 @@ bool	validate_map(t_scene *scene)
 	visited = alloc_visited(&scene->map);
 	if (!visited)
 		return (parse_error("Validation allocation failed"));
-	if (!flood_fill(&scene->map, visited, px, py))
+	stack = ft_safe_calloc((size_t)scene->map.width
+			* scene->map.height, sizeof(t_point), false);
+	if (!stack)
+		return (parse_error("Validation allocation failed"));
+	state.visited = visited;
+	state.stack = stack;
+	if (!flood_fill(&scene->map, &state, px, py))
 		return (parse_error("Map is not closed by walls"));
 	return (true);
 }

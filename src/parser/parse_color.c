@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_color.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smarttapon.lim@gmail.com <terx13>          +#+  +:+       +#+        */
+/*   By: slimvutt <slimvutt@student.42bangkok.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/04 09:12:04 by smarttapon.       #+#    #+#             */
-/*   Updated: 2026/08/04 09:12:04 by smarttapon.      ###   ########.fr       */
+/*   Created: 2026/08/04 09:12:04 by slimvutt          #+#    #+#             */
+/*   Updated: 2026/08/04 09:12:04 by slimvutt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,34 @@ static bool	is_number(char *part)
 	while (part[i] == ' ' || part[i] == '\t' || part[i] == '\n')
 		i++;
 	return (digits > 0 && part[i] == '\0');
+}
+
+static bool	commas_are_valid(char *value)
+{
+	int	i;
+	int	end;
+
+	i = 0;
+	while (value[i] == ' ' || value[i] == '\t')
+		i++;
+	if (value[i] == ',')
+		return (false);
+	end = 0;
+	while (value[end])
+		end++;
+	end--;
+	while (end >= 0 && (value[end] == ' ' || value[end] == '\t'
+			|| value[end] == '\n'))
+		end--;
+	if (end >= 0 && value[end] == ',')
+		return (false);
+	while (value[i] && value[i] != '\n')
+	{
+		if (value[i] == ',' && value[i + 1] == ',')
+			return (false);
+		i++;
+	}
+	return (true);
 }
 
 static bool	has_three_parts(char **parts)
@@ -77,6 +105,8 @@ bool	parse_color(t_rgb *color, char *value)
 
 	if (color->r != -1)
 		return (parse_error("Duplicate F or C identifier"));
+	if (!commas_are_valid(value))
+		return (parse_error("Invalid colour, expected R,G,B in 0-255"));
 	parts = ft_split(value, ',');
 	if (!parts)
 		return (parse_error("Colour allocation failed"));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_elements.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smarttapon.lim@gmail.com <terx13>          +#+  +:+       +#+        */
+/*   By: slimvutt <slimvutt@student.42bangkok.com>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/04 09:12:04 by smarttapon.       #+#    #+#             */
-/*   Updated: 2026/08/04 09:12:04 by smarttapon.      ###   ########.fr       */
+/*   Created: 2026/08/04 09:12:04 by slimvutt          #+#    #+#             */
+/*   Updated: 2026/08/04 09:12:04 by slimvutt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
