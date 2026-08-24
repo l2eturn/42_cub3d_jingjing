@@ -52,7 +52,7 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		return (print_error("Usage: ./cub3D <map.cub>"));
 	if (WIDTH < MIN_WIDTH || HEIGHT < MIN_HEIGHT)
-		return (print_error("WIDTH and HEIGHT must be >= MIN_WIDTH and MIN_HEIGHT"));
+		return (print_error("WIDTH and HEIGHT are below the minimum"));
 	ft_bzero(&game, sizeof(game));
 	if (!parse_scene(argv[1], &game.scene))
 	{

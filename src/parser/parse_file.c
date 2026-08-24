@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimvutt <slimvutt@student.42bangkok.com>  +#+  +:+       +#+        */
+/*   By: smarttapon <smarttapon@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 09:12:04 by slimvutt          #+#    #+#             */
-/*   Updated: 2026/08/04 09:12:04 by slimvutt         ###   ########.fr       */
+/*   Updated: 2026/08/24 17:57:17 by smarttapon       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,6 @@ static bool	has_cub_extension(char *filename)
 	return (ft_strncmp(filename + length - 4, ".cub", 4) == 0);
 }
 
-/*
-** -1 in the red channel marks a colour that has not been read yet,
-** which both elements_complete() and parse_color() rely on.
-*/
 static void	scene_init(t_scene *scene)
 {
 	int	i;
@@ -40,10 +36,6 @@ static void	scene_init(t_scene *scene)
 	scene->map.height = 0;
 }
 
-/*
-** The file is read straight through once: identifiers first, then the
-** map, which is why the map has to be the last block in the file.
-*/
 static bool	parse_sections(int fd, t_scene *scene)
 {
 	char	*first_map_line;

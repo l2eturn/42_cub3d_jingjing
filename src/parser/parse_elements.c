@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_elements.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimvutt <slimvutt@student.42bangkok.com>  +#+  +:+       +#+        */
+/*   By: smarttapon <smarttapon@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 09:12:04 by slimvutt          #+#    #+#             */
-/*   Updated: 2026/08/04 09:12:04 by slimvutt         ###   ########.fr       */
+/*   Updated: 2026/08/24 17:57:04 by smarttapon       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,6 @@ static int	texture_index(char *line)
 	return (-1);
 }
 
-/*
-** The blank after the identifier matters: without it "NOPE ./x.png"
-** would be read as a north texture called "PE ./x.png".
-*/
 static bool	parse_element_line(t_scene *scene, char *line)
 {
 	int	index;
@@ -84,10 +80,6 @@ bool	elements_complete(t_scene *scene)
 	return (true);
 }
 
-/*
-** Stops at the first map row and hands it back through first_map_line:
-** get_next_line cannot rewind, so dropping that row would lose it.
-*/
 bool	parse_elements(int fd, t_scene *scene, char **first_map_line)
 {
 	char	*line;

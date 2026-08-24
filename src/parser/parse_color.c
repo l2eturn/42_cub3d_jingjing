@@ -3,19 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parse_color.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimvutt <slimvutt@student.42bangkok.com>  +#+  +:+       +#+        */
+/*   By: smarttapon <smarttapon@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 09:12:04 by slimvutt          #+#    #+#             */
-/*   Updated: 2026/08/04 09:12:04 by slimvutt         ###   ########.fr       */
+/*   Updated: 2026/08/24 17:56:46 by smarttapon       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-/*
-** Accepts " 220 " but rejects "22a", "" and "12 34": surrounding blanks
-** are skipped, everything between them has to be a digit.
-*/
 static bool	is_number(char *part)
 {
 	int	i;
@@ -94,10 +90,6 @@ static bool	fill_rgb(char **parts, t_rgb *color)
 	return (true);
 }
 
-/*
-** r stays at -1 until a colour is stored, so it doubles as the
-** "already seen this identifier" marker.
-*/
 bool	parse_color(t_rgb *color, char *value)
 {
 	char	**parts;

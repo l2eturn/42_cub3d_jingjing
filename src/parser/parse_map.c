@@ -3,20 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimvutt <slimvutt@student.42bangkok.com>  +#+  +:+       +#+        */
+/*   By: smarttapon <smarttapon@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 09:12:04 by slimvutt          #+#    #+#             */
-/*   Updated: 2026/08/04 09:12:04 by slimvutt         ###   ########.fr       */
+/*   Updated: 2026/08/24 17:57:28 by smarttapon       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-/*
-** Rows are collected in a list first because the map height is only
-** known once the file ends. These copies use plain malloc and are
-** released by ft_lstclear; the final grid gets its own memory.
-*/
 static bool	collect_line(t_list **lines, char *line, int *width)
 {
 	t_list	*node;
@@ -78,11 +73,6 @@ static bool	read_map_lines(int fd, t_list **lines, char *line, int *width)
 	return (true);
 }
 
-/*
-** Short rows are padded with spaces up to the widest row, so that
-** map_is_wall() can index any x < width without reading past the
-** end of a string. Spaces already count as walls for the renderer.
-*/
 static bool	build_grid(t_scene *scene, t_list *lines, int width)
 {
 	char	*row;

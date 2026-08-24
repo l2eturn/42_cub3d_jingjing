@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimvutt <slimvutt@student.42bangkok.com>  +#+  +:+       +#+        */
+/*   By: smarttapon <smarttapon@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 09:12:04 by slimvutt          #+#    #+#             */
-/*   Updated: 2026/08/04 09:12:04 by slimvutt         ###   ########.fr       */
+/*   Updated: 2026/08/24 17:57:33 by smarttapon       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,6 @@ bool	is_blank_line(char *line)
 	return (true);
 }
 
-/*
-** A map row holds only map characters and at least one cell (0 or 1).
-** The cell requirement is what keeps an identifier line such as
-** "NO ./wall.png" from being mistaken for the start of the map.
-*/
 bool	is_map_line(char *line)
 {
 	int		i;

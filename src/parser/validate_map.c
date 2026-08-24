@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_map.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: slimvutt <slimvutt@student.42bangkok.com>  +#+  +:+       +#+        */
+/*   By: smarttapon <smarttapon@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 09:12:04 by slimvutt          #+#    #+#             */
-/*   Updated: 2026/08/04 09:12:04 by slimvutt         ###   ########.fr       */
+/*   Updated: 2026/08/24 17:57:38 by smarttapon       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,6 @@ static bool	push_neighbour(t_map *map, t_flood *state,
 	return (true);
 }
 
-/*
-** Spreads out from the player over every reachable cell. Falling off
-** the grid, or stepping onto a padded space, means the walls do not
-** enclose the player, so the map is open. Walls stop the spread.
-*/
 static bool	flood_fill(t_map *map, t_flood *state,
 		int start_x, int start_y)
 {
