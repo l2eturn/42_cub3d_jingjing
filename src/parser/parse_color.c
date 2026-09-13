@@ -6,7 +6,7 @@
 /*   By: smarttapon <smarttapon@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 09:12:04 by slimvutt          #+#    #+#             */
-/*   Updated: 2026/09/13 16:48:18 by smarttapon       ###   ########.fr       */
+/*   Updated: 2026/09/13 22:19:52 by smarttapon       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static bool	is_number(char *part)
 	}
 	while (part[i] == ' ' || part[i] == '\t' || part[i] == '\n')
 		i++;
+	if (digits > 3)
+		return false;
 	return (digits > 0 && part[i] == '\0');
 }
 

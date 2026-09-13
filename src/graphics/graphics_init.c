@@ -14,11 +14,11 @@
 
 bool	graphics_init(t_game *game)
 {
+	if (!texture_load_all(game))
+		return (false);
 	mlx_set_setting(MLX_MAXIMIZED, false);
 	game->mlx = mlx_init(WIDTH, HEIGHT, TITLE, false);
 	if (!game->mlx)
-		return (false);
-	if (!texture_load_all(game))
 		return (false);
 	game->image = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	if (!game->image)
