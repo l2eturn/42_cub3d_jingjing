@@ -1,5 +1,5 @@
+*This project has been created as part of the 42 curriculum by waragwon, slimvutt*
 # cub3d
->This project has been created as part of the 42 curriculum by waragwon slimvutt
 ## Description
 A project about how Wolfenstein 3D works - raycasting using the DDA algorithm to render a 3D map from 2D space.
 
