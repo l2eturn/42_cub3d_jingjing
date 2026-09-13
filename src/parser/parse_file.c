@@ -6,7 +6,7 @@
 /*   By: smarttapon <smarttapon@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/04 09:12:04 by slimvutt          #+#    #+#             */
-/*   Updated: 2026/09/13 07:05:28 by smarttapon       ###   ########.fr       */
+/*   Updated: 2026/09/13 16:48:15 by smarttapon       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static bool	parse_sections(int fd, t_scene *scene)
 	return (validate_map(scene));
 }
 
-static void free_gnl(int fd)
+static void	free_gnl(int fd)
 {
 	char	*line;
 
